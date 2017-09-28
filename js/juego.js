@@ -9,7 +9,7 @@ El objeto Juego contiene mucho codigo. Tomate tu tiempo para leerlo tranquilo
 y entender que es lo que hace en cada una de sus partes. */
 
 var Juego = {
-  // Aca se configura el tamanio del canvas del juego
+  // Aca se configura el tamaño del canvas del juego
   anchoCanvas: 961,
   altoCanvas: 577,
   jugador: Jugador,
@@ -50,7 +50,7 @@ var Juego = {
 }
 
 /* Se cargan los recursos de las imagenes, para tener un facil acceso
-a ellos. No hace falta comprender esta parte. Pero si queres agregar tus propies
+a ellos. No hace falta comprender esta parte. Pero si queres agregar tus propias
 imagenes tendras que poner su ruta en la lista para que pueda ser precargada como
 todas las demas. */
 Juego.iniciarRecursos = function() {
@@ -113,13 +113,13 @@ Juego.capturarMovimiento = function(tecla) {
   var velocidad = this.jugador.velocidad;
 
   // El movimiento esta determinado por la velocidad del jugador
-  if (tecla == 'izq') {
+  if (tecla == 'izquierda') {
     movX = -velocidad;
   }
   if (tecla == 'arriba') {
     movY = -velocidad;
   }
-  if (tecla == 'der') {
+  if (tecla == 'derecha') {
     movX = velocidad;
   }
   if (tecla == 'abajo') {
@@ -128,10 +128,7 @@ Juego.capturarMovimiento = function(tecla) {
 
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
-    /* Aca tiene que estar la logica para mover al jugador invocando alguno
-    de sus metodos  */
-
-    /* COMPLETAR */
+    this.jugador.mover(movX, movY, tecla);
   }
 };
 
@@ -141,12 +138,7 @@ Juego.dibujar = function() {
   //Se pinta la imagen de fondo segun el estado del juego
   this.dibujarFondo();
 
-
-  /* Aca hay que agregar la logica para poder dibujar al jugador principal
-  utilizando al dibujante y los metodos que nos brinda.
-  "Dibujante dibuja al jugador" */
-
-  /* Completar */
+  Dibujante.dibujarEntidad(this.jugador);
 
   // Se recorren los obstaculos de la carretera pintandolos
   this.obstaculosCarretera.forEach(function(obstaculo) {
@@ -201,7 +193,7 @@ Juego.chequearColisiones = function(x, y) {
   this.obstaculos().forEach(function(obstaculo) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
 
-      /*COMPLETAR, obstaculo debe chocar al jugador*/
+      this.jugador.perderVidas(obstaculo.potencia);
 
       puedeMoverse = false
     }
@@ -256,9 +248,9 @@ Juego.iniciarRecursos();
 // Documentacion: https://developer.mozilla.org/es/docs/Web/API/EventTarget/addEventListener
 document.addEventListener('keydown', function(e) {
   var allowedKeys = {
-    37: 'izq',
+    37: 'izquierda',
     38: 'arriba',
-    39: 'der',
+    39: 'derecha',
     40: 'abajo'
   };
 

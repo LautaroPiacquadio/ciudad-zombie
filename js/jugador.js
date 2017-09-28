@@ -10,7 +10,19 @@ var Jugador = {
   alto: 30,
   velocidad: 10,
   vidas: 5,
-  // Hay que agregar lo que falte al jugador: movimientos, perdida de vidas,
-  // y todo lo que haga falta para que cumpla con sus responsabilidades
-
+  mover: function(movX, movY, tecla) {
+      Jugador.x += movX;
+      Jugador.y += movY;
+      Jugador.sprite = 'imagenes/auto_rojo_' + tecla + '.png';
+      if (tecla === 'arriba' || tecla === 'abajo') {
+          Jugador.ancho = 15;
+          Jugador.alto = 30;
+      } else {
+          Jugador.ancho = 30;
+          Jugador.alto = 15;
+      }
+  },
+  perderVidas: function(danio) {
+      Jugador.vidas -= danio;
+  }
 }
