@@ -11,18 +11,18 @@ var Jugador = {
   velocidad: 10,
   vidas: 5,
   mover: function(movX, movY, tecla) {
-      Jugador.x += movX;
-      Jugador.y += movY;
-      Jugador.sprite = 'imagenes/auto_rojo_' + tecla + '.png';
+      this.x += movX;
+      this.y += movY;
+      this.sprite = 'imagenes/auto_rojo_' + tecla + '.png';
       if (tecla === 'arriba' || tecla === 'abajo') {
-          Jugador.ancho = 15;
-          Jugador.alto = 30;
+        this.ancho = 15;
+        this.alto = 30;
       } else {
-          Jugador.ancho = 30;
-          Jugador.alto = 15;
+        this.ancho = 30;
+        this.alto = 15;
       }
   },
   perderVidas: function(danio) {
-      Jugador.vidas -= danio;
+    this.vidas -= danio;
   }
 }

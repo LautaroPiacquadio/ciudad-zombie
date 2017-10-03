@@ -20,8 +20,30 @@ var Juego = {
   obstaculosCarretera: [
     /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
     de ejemplo, pero podras agregar muchos mas. */
-    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1)
+    new Obstaculo('imagenes/valla_horizontal.png', 70, 50, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 102, 50, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 137, 50, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 170, 50, 30, 30, 1),
+    new Obstaculo('imagenes/bache.png', 170, 170, 30, 30, 1),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 180, 200, 15, 30, 1),
+   
+    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 100, 430, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 130, 460, 30, 30, 1),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 70, 400, 15, 30, 1),
 
+    new Obstaculo('imagenes/valla_vertical.png', 400, 480, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 400, 380, 30, 30, 1),
+    new Obstaculo('imagenes/bache.png', 300, 480, 30, 30, 1),
+    new Obstaculo('imagenes/auto_verde_derecha.png', 370, 385, 30, 15, 1),
+
+    new Obstaculo('imagenes/auto_verde_abajo.png', 280, 235, 15, 30, 1),
+
+    new Obstaculo('imagenes/bache.png', 420, 120, 30, 30, 1),
+
+    new Obstaculo('imagenes/valla_horizontal.png', 855, 150, 30, 30, 1),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 760, 270, 15, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 760, 300, 30, 30, 1),
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -157,6 +179,8 @@ Juego.dibujar = function() {
     var x = tamanio * i
     Dibujante.dibujarRectangulo('red', x, 0, tamanio, 8);
   }
+
+  Dibujante.dibujarRectangulo('green', 759, 515, 128, 50);
 };
 
 
@@ -194,6 +218,7 @@ Juego.chequearColisiones = function(x, y) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
 
       this.jugador.perderVidas(obstaculo.potencia);
+      obstaculo.chocar();
 
       puedeMoverse = false
     }
@@ -254,5 +279,7 @@ document.addEventListener('keydown', function(e) {
     40: 'abajo'
   };
 
-  Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+  if (allowedKeys[e.keyCode]) {
+    Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+  }
 });
