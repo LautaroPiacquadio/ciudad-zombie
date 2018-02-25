@@ -66,7 +66,18 @@ var Juego = {
   ],
   // Los enemigos se agregaran en este arreglo.
   enemigos: [
-
+    new ZombieCaminante('imagenes/zombie1.png', 720, 220, 10, 10, 1, { desdeX: 720, hastaX: 961, desdeY: 210, hastaY: 230 }),
+    new ZombieCaminante('imagenes/zombie1.png', 0, 220, 10, 10, 2, { desdeX: 0, hastaX: 600, desdeY: 210, hastaY: 230 }),
+    new ZombieCaminante('imagenes/zombie2.png', 0, 200, 10, 10, 1, { desdeX: 0, hastaX: 600, desdeY: 190, hastaY: 210 }),
+    new ZombieCaminante('imagenes/zombie3.png', 0, 180, 10, 10, 1, { desdeX: 0, hastaX: 600, desdeY: 170, hastaY: 190 }),
+    new ZombieCaminante('imagenes/zombie2.png', 720, 180, 10, 10, 2, { desdeX: 720, hastaX: 961, desdeY: 170, hastaY: 190 }),
+    new ZombieCaminante('imagenes/zombie1.png', 0, 500, 10, 10, 2, { desdeX: 0, hastaX: 600, desdeY: 490, hastaY: 510 }),
+    new ZombieCaminante('imagenes/zombie2.png', 0, 480, 10, 10, 1, { desdeX: 0, hastaX: 600, desdeY: 470, hastaY: 490 }),
+    new ZombieCaminante('imagenes/zombie3.png', 0, 460, 10, 10, 2, { desdeX: 0, hastaX: 600, desdeY: 450, hastaY: 470 }),
+    new ZombieCaminante('imagenes/zombie3.png', 720, 460, 10, 10, 1, { desdeX: 720, hastaX: 961, desdeY: 450, hastaY: 470 }),
+    new ZombieConductor('imagenes/tren_horizontal.png', 0, 322, 90, 30, 4, { desdeX: 0, hastaX: 961, desdeY: 644, hastaY: 644 }, 'horizontal'),
+    new ZombieConductor('imagenes/tren_vertical.png', 673, 0, 30, 90, 3, { desdeX: 0, hastaX: 0, desdeY: 0, hastaY: 580 }, 'vertical'),
+    new ZombieConductor('imagenes/tren_vertical.png', 643, 0, 30, 90, 3, { desdeX: 0, hastaX: 0, desdeY: 0, hastaY: 580 }, 'vertical'),
   ]
 
 }
@@ -160,27 +171,29 @@ Juego.dibujar = function() {
   //Se pinta la imagen de fondo segun el estado del juego
   this.dibujarFondo();
 
-  Dibujante.dibujarEntidad(this.jugador);
+  if (!(this.terminoJuego() || this.ganoJuego())) {
+    Dibujante.dibujarEntidad(this.jugador);
 
-  // Se recorren los obstaculos de la carretera pintandolos
-  this.obstaculosCarretera.forEach(function(obstaculo) {
-    Dibujante.dibujarEntidad(obstaculo);
-  });
-
-  // Se recorren los enemigos pintandolos
-  this.enemigos.forEach(function(enemigo) {
-    /* Completar */
-  });
-
-  // El dibujante dibuja las vidas del jugador
-  var tamanio = this.anchoCanvas / this.vidasInicial;
-  Dibujante.dibujarRectangulo('white', 0, 0, this.anchoCanvas, 8);
-  for (var i = 0; i < this.jugador.vidas; i++) {
-    var x = tamanio * i
-    Dibujante.dibujarRectangulo('red', x, 0, tamanio, 8);
+    // Se recorren los obstaculos de la carretera pintandolos
+    this.obstaculosCarretera.forEach(function(obstaculo) {
+      Dibujante.dibujarEntidad(obstaculo);
+    });
+  
+    // Se recorren los enemigos pintandolos
+    this.enemigos.forEach(function(enemigo) {
+      Dibujante.dibujarEntidad(enemigo);
+    });
+  
+    // El dibujante dibuja las vidas del jugador
+    var tamanio = this.anchoCanvas / this.vidasInicial;
+    Dibujante.dibujarRectangulo('white', 0, 0, this.anchoCanvas, 8);
+    for (var i = 0; i < this.jugador.vidas; i++) {
+      var x = tamanio * i
+      Dibujante.dibujarRectangulo('red', x, 0, tamanio, 8);
+    }
+  
+    Dibujante.dibujarRectangulo('green', 759, 515, 128, 50);
   }
-
-  Dibujante.dibujarRectangulo('green', 759, 515, 128, 50);
 };
 
 
@@ -189,7 +202,9 @@ Juego.dibujar = function() {
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
 Juego.moverEnemigos = function() {
-  /* COMPLETAR */
+  this.enemigos.forEach(function(enemigo) {
+    enemigo.mover();
+  })
 };
 
 /* Recorre los enemigos para ver cual esta colisionando con el jugador
@@ -198,12 +213,14 @@ Para chequear las colisiones estudiar el metodo posicionValida. Alli
 se ven las colisiones con los obstaculos. En este caso sera con los zombies. */
 Juego.calcularAtaques = function() {
   this.enemigos.forEach(function(enemigo) {
-    if (intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)) {
+    if (this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)) {
       /* Si el enemigo colisiona debe empezar su ataque
       COMPLETAR */
+      enemigo.comenzarAtaque(this.jugador)
     } else {
       /* Sino, debe dejar de atacar
       COMPLETAR */
+      enemigo.dejarDeAtacar(this.jugador)
     }
   }, this);
 };
